@@ -3,11 +3,11 @@ var roleBuilder = {
 
         if(creep.memory.building && creep.carry.energy == 0) {
             creep.memory.building = false;
-            creep.say('harvesting');
+            creep.say('succhio');
         }
         if(!creep.memory.building && creep.carry.energy == creep.carryCapacity) {
             creep.memory.building = true;
-            creep.say('building');
+            creep.say('costruisco');
         }
 
         if(creep.memory.building) {
