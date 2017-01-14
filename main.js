@@ -1,6 +1,8 @@
 var roleHarvester = require('role.harvester');
 var roleUpgrader = require('role.upgrader');
 var roleBuilder = require('role.builder');
+var roleRepairer = require('role.repairer');
+
 
 module.exports.loop = function () {
 	
@@ -14,17 +16,22 @@ module.exports.loop = function () {
 	var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
 	var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
 	var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
+    var repairers = _.filter(Game.creeps, (creep) => creep.memory.role == 'repairer');
 
     if(harvesters.length < 2) {
-        var newName = Game.spawns['Spawn1'].createCreep([WORK,CARRY,MOVE], undefined, {role: 'harvester'});
+        var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,CARRY,MOVE], undefined, {role: 'harvester'});
         console.log('Spawning new harvester: ' + newName);
     }
 	if(builders.length < 1) {
-        var newName = Game.spawns['Spawn1'].createCreep([WORK,CARRY,MOVE], undefined, {role: 'builder'});
+        var newName = Game.spawns['Spawn1'].createCreep([WORK,WORK,CARRY,MOVE], undefined, {role: 'builder'});
         console.log('Spawning new builder: ' + newName);
     }
 	if(upgraders.length < 1) {
-        var newName = Game.spawns['Spawn1'].createCreep([WORK,CARRY,MOVE], undefined, {role: 'upgrader'});
+        var newName = Game.spawns['Spawn1'].createCreep([WORK,CARRY,MOVE,MOVE], undefined, {role: 'upgrader'});
+        console.log('Spawning new upgrader: ' + newName);
+    }
+    if(repairers.length < 1) {
+        var newName = Game.spawns['Spawn1'].createCreep([WORK,CARRY,MOVE,MOVE], undefined, {role: 'repairer'});
         console.log('Spawning new upgrader: ' + newName);
     }
     var tower = Game.getObjectById('TOWER_ID');
@@ -51,6 +58,9 @@ module.exports.loop = function () {
         }
         if(creep.memory.role == 'builder') {
             roleBuilder.run(creep);
+        }
+        if(creep.memory.role == 'repairer') {
+            roleRepairer.run(creep);
         }
     }
 }
