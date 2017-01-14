@@ -4,6 +4,13 @@ var roleBuilder = require('role.builder');
 
 module.exports.loop = function () {
 	
+    //nontiscordardime
+    for (let name in Memory.creeps) {
+        if (Game.creeps[name] == undefined) {
+            delete Memory.creeps[name];
+        }
+    }
+
 	var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
 	var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
 	var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
