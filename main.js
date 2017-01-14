@@ -12,7 +12,6 @@ module.exports.loop = function () {
             delete Memory.creeps[name];
         }
     }
-
 	var harvesters = _.filter(Game.creeps, (creep) => creep.memory.role == 'harvester');
 	var builders = _.filter(Game.creeps, (creep) => creep.memory.role == 'builder');
 	var upgraders = _.filter(Game.creeps, (creep) => creep.memory.role == 'upgrader');
