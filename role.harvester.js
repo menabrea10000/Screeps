@@ -1,12 +1,20 @@
 var roleUpgrader = require('role.upgrader');
 var roleHarvester = {
+    run: function (creep) {
 
-    /** @param {Creep} creep **/
-    run: function(creep) {
-        if(creep.carry.energy < creep.carryCapacity) {
-            var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0]);
+        if (creep.memory.lavora && creep.carry.energy == 0) {
+            creep.memory.lavora = false;
+            creep.say('succhio');
+        }
+        if (!creep.memory.lavora && creep.carry.energy == creep.carryCapacity) {
+            creep.memory.lavora = true;
+            creep.say('svuoto');
+        }
+
+        if (creep.carry.energy < creep.carryCapacity && !creep.memory.lavora) {
+            var sources = creep.pos.findClosestByPath(FIND_SOURCES);
+            if(creep.harvest(sources) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources);
             }
         }
         else {

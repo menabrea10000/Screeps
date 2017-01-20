@@ -2,16 +2,16 @@ var roleUpgrader = require('role.upgrader');
 var roleRepairer = {
     run: function(creep) {
 
-        if(creep.memory.repairer && creep.carry.energy == 0) {
-            creep.memory.repairer = false;
+        if (creep.memory.lavora && creep.carry.energy == 0) {
+            creep.memory.lavora = false;
             creep.say('succhio');
         }
-        if(!creep.memory.repairer && creep.carry.energy == creep.carryCapacity) {
-            creep.memory.repairer = true;
+        if (!creep.memory.lavora && creep.carry.energy == creep.carryCapacity) {
+            creep.memory.lavora = true;
             creep.say('costruisco');
         }
 
-        if(creep.memory.repairer) {
+        if (creep.memory.lavora) {
             var targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => structure.hits < structure.hitsMax
             });
@@ -25,9 +25,9 @@ var roleRepairer = {
             }
         }
         else {
-            var sources = creep.room.find(FIND_SOURCES);
-            if(creep.harvest(sources[0]) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0]);
+            var sources = creep.pos.findClosestByPath(FIND_SOURCES);
+            if(creep.harvest(sources) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(sources);
             }
         }
     }
