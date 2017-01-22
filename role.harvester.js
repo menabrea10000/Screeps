@@ -1,7 +1,12 @@
 var roleUpgrader = require('role.upgrader');
 var roleHarvester = {
     run: function (creep) {
-
+        if (creep.carry.energy < creep.carryCapacity) {
+            var energy = creep.pos.findInRange(FIND_DROPPED_ENERGY, 1);
+            if (energy.length) {
+                creep.pickup(energy[0]);
+            }
+        }
         if (creep.memory.lavora && creep.carry.energy == 0) {
             creep.memory.lavora = false;
             creep.say('succhio');
@@ -12,26 +17,34 @@ var roleHarvester = {
         }
 
         if (creep.carry.energy < creep.carryCapacity && !creep.memory.lavora) {
-            var sources = creep.pos.findClosestByPath(FIND_SOURCES);
-            if(creep.harvest(sources) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources);
+            var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+            if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                creep.moveTo(source);
             }
         }
         else {
-            var targets = creep.room.find(FIND_STRUCTURES, {
+            var target = creep.pos.findClosestByPath(FIND_STRUCTURES, {
                     filter: (structure) => {
                         return (structure.structureType == STRUCTURE_EXTENSION ||
                                 structure.structureType == STRUCTURE_SPAWN ||
                                 structure.structureType == STRUCTURE_TOWER) && structure.energy < structure.energyCapacity;
                     }
             });
-            if(targets.length > 0) {
-                if(creep.transfer(targets[0], RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(targets[0]);
+            if(target != undefined) {
+                if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(target);
                 }	
             }
-			else {
-				roleUpgrader.run(creep);
+            else {
+                var target = creep.room.storage;
+                if (target != undefined && creep.room.storage.store[RESOURCE_ENERGY] < 1000000) {
+                    if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                        creep.moveTo(target);
+                    }
+                }
+                else {
+                    roleUpgrader.run(creep);
+                }
 			}
         }
     }

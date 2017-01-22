@@ -13,4 +13,22 @@
         }
         return this.createCreep(Corpo, undefined, { role: Ruolo, lavora: false });
     };
+    StructureSpawn.prototype.CreaLadro = function (Costo,Casa,Flag) {
+        var Corpo = [];
+        for (let i = 0; i < 3; i++) {
+            Corpo.push(WORK);
+        }
+        Costo -= 150 * 3; //Metto il move per ogni work
+        var Parti = Math.floor(Costo / 100);  //50+50 deve scappare forte
+        for (let i = 0; i < Parti; i++) {
+            Corpo.push(CARRY);
+        }
+        for (let i = 0; i < Parti + 3; i++) {
+            Corpo.push(MOVE);
+        }
+        return this.createCreep(Corpo, undefined, { role: 'ladro', nato : Casa, ruba: Flag , lavora: false });
+    }
+    StructureSpawn.prototype.CreaClaimer = function (Flag) {
+        return this.createCreep([CLAIM, MOVE], undefined, { role: 'claimer', claim: Flag});
+    }
 };
