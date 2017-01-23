@@ -1,6 +1,7 @@
 var roleUpgrader = require('role.upgrader');
 var roleHarvester = {
     run: function (creep) {
+        /** @param {creep} creep */
         if (creep.carry.energy < creep.carryCapacity) {
             var energy = creep.pos.findInRange(FIND_DROPPED_ENERGY, 1);
             if (energy.length) {
@@ -17,9 +18,17 @@ var roleHarvester = {
         }
 
         if (creep.carry.energy < creep.carryCapacity && !creep.memory.lavora) {
-            var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-            if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(source);
+            if (creep.room.storage.store[RESOURCE_ENERGY] == 0) {
+                var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+                if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(source);
+                }
+            }
+            else {
+                var source = creep.room.storage;
+                if (creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(source);
+                }
             }
         }
         else {
@@ -37,14 +46,15 @@ var roleHarvester = {
             }
             else {
                 var target = creep.room.storage;
-                if (target != undefined && creep.room.storage.store[RESOURCE_ENERGY] < 1000000) {
+                /*if (target != undefined && creep.room.storage.store[RESOURCE_ENERGY] < 1000000) {
                     if (creep.transfer(target, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
                         creep.moveTo(target);
                     }
                 }
                 else {
+                */
                     roleUpgrader.run(creep);
-                }
+                //}
 			}
         }
     }

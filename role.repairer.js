@@ -30,9 +30,17 @@ var roleRepairer = {
             }
         }
         else {
-            var sources = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-            if(creep.harvest(sources) == ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources);
+            if (creep.room.storage.store[RESOURCE_ENERGY] == 0) {
+                var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+                if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(source);
+                }
+            }
+            else {
+                var source = creep.room.storage;
+                if (creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                    creep.moveTo(source);
+                }
             }
         }
     }
