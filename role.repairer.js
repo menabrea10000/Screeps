@@ -43,16 +43,40 @@ var roleRepairer = {
                         }
                     }
                     else {
-                        var source = creep.room.storage;
-                        if (creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
-                            creep.moveTo(source);
+                        var source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                            filter: (structure) => {
+                                return (structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > creep.carryCapacity)
+                            }
+                        });
+                        if (source != undefined) {
+                            if (creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(source);
+                            }
+                        }
+                        else {
+                            var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+                            if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(source);
+                            }
                         }
                     }
                 }
                 else {
-                    var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-                    if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                        creep.moveTo(source);
+                    var source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                        filter: (structure) => {
+                            return (structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > creep.carryCapacity)
+                        }
+                    });
+                    if (source != undefined) {
+                        if (creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(source);
+                        }
+                    }
+                    else {
+                        var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+                        if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(source);
+                        }
                     }
                 }
             }

@@ -13,13 +13,14 @@ module.exports.loop = function () {
     for (let torre of torri) {
             torre.Spara();
     }
-    // link
+    /* link
     var linkA = Game.getObjectById('104d7d66a279304');
     var linkB = Game.spawns['Spawn1'].pos.findInRange(FIND_MY_STRUCTURES, 3,
         { filter: { structureType: STRUCTURE_LINK } })[0];
     if (linkA.energy > 740) {
         linkA.transferEnergy(linkB);
     }
+    */
     for (let name in Game.creeps) {
         Game.creeps[name].FaiIlTuoLavoro();  //bravi creeps
     }

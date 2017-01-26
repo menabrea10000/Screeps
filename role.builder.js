@@ -45,19 +45,49 @@ var roleBuilder = {
                 }
             }
             else {
-                if (creep.room.storage == undefined) {
-                    var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-                }
-                else {
+                if (creep.room.storage != undefined) {
                     if (creep.room.storage.store[RESOURCE_ENERGY] == 0) {
                         var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+                        if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(source);
+                        }
                     }
                     else {
-                        var source = creep.room.storage;
+                        var source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                            filter: (structure) => {
+                                return (structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > creep.carryCapacity)
+                            }
+                        });
+                        if (source != undefined) {
+                            if (creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(source);
+                            }
+                        }
+                        else {
+                            var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+                            if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                                creep.moveTo(source);
+                            }
+                        }
                     }
                 }
-                if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-                    creep.moveTo(source);
+                else {
+                    var source = creep.pos.findClosestByPath(FIND_STRUCTURES, {
+                        filter: (structure) => {
+                            return (structure.structureType == STRUCTURE_CONTAINER && structure.store[RESOURCE_ENERGY] > creep.carryCapacity)
+                        }
+                    });
+                    if (source != undefined) {
+                        if (creep.withdraw(source, RESOURCE_ENERGY) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(source);
+                        }
+                    }
+                    else {
+                        var source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+                        if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
+                            creep.moveTo(source);
+                        }
+                    }
                 }
             }
         }

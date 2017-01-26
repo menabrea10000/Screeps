@@ -32,7 +32,7 @@
         return this.createCreep([CLAIM, MOVE], undefined, { role: 'claimer', stanza: Stanza});
     }
     StructureSpawn.prototype.CreaMinatore = function (SourceID, Stanza) {
-        return this.createCreep([WORK, WORK, WORK, WORK, WORK, WORK, CARRY, MOVE], undefined, { role: 'minatore', source: SourceID, stanza: Stanza });
+        return this.createCreep([WORK, WORK, WORK, WORK, WORK, WORK, MOVE], undefined, { role: 'minatore', source: SourceID, stanza: Stanza });
     }
     StructureSpawn.prototype.CreaFattorino = function (Stanza) {
         return this.createCreep([CARRY, CARRY, MOVE, MOVE], undefined, { role: 'fattorino', stanza: Stanza });

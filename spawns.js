@@ -29,7 +29,7 @@ StructureSpawn.prototype.CreaCreepRichiesto = function () {
         var SourceMinatore = SourceIDs[0];
     }
     var energiamax = stanza.energyCapacityAvailable;
-    if (harvesters.length < 1) {
+    if (harvesters.length < 1 && fattorini.length == 0) {
         var newName = this.CreaCorpo(energiamax, 'harvester', this.pos.roomName);
         if (newName == ERR_NOT_ENOUGH_ENERGY && harvesters == 0) {
             var newName = this.CreaCorpo(stanza.energyAvailable, 'harvester', this.pos.roomName);   //antiwipe
@@ -42,7 +42,7 @@ StructureSpawn.prototype.CreaCreepRichiesto = function () {
     else if (minatori.length < SourceIDs.length && Game.rooms[this.pos.roomName].controller.level > 4) {
         var newName = this.CreaMinatore(SourceMinatore.id, this.pos.roomName);
     }
-    else if (fattorini.length < 1 && Game.rooms[this.pos.roomName].controller.level > 4) {
+    else if (fattorini.length < 2 && Game.rooms[this.pos.roomName].controller.level > 4) {
         var newName = this.CreaFattorino(this.pos.roomName);
     }
     else if (builders.length < 1) {
